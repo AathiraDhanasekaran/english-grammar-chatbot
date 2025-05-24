@@ -45,16 +45,28 @@ def get_response(user_input):
 # Streamlit UI
 st.title("📚 English Grammar Chatbot")
 
-with st.form(key="chat_form", clear_on_submit=True):
-    user_input = st.text_input("Type your message:")
-    submitted = st.form_submit_button("Send")
+# Display chat messages in order, with latest at the bottom
+chat_container = st.container()
 
-    if submitted and user_input:
-        response = get_response(user_input)
-        st.session_state.chat_history.append(("You", user_input))
-        st.session_state.chat_history.append(("Bot", response))
+with chat_container:
+    for speaker, message in st.session_state.chat_history:
+        st.markdown(f"**{speaker}:** {message}")
 
-# Display chat history
-for speaker, message in st.session_state.chat_history:
-    st.markdown(f"**{speaker}:** {message}")
+# A small spacer to create distance before the input field
+st.markdown("---")
+
+# Keep input at the bottom
+input_container = st.container()
+
+with input_container:
+    with st.form(key="chat_form", clear_on_submit=True):
+        user_input = st.text_input("💬 Type your message and press Enter:")
+        submitted = st.form_submit_button("Send")
+
+        if submitted and user_input:
+            response = get_response(user_input)
+            st.session_state.chat_history.append(("You", user_input))
+            st.session_state.chat_history.append(("Bot", response))
+            st.experimental_rerun()  # Auto-scrolls to bottom by re-running the app
+
 
