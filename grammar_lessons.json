@@ -1,0 +1,19 @@
+{
+  "lessons": {
+    "1": {
+      "title": "Parts of Speech",
+      "content": "There are 8 parts of speech: noun, pronoun, verb, adjective, adverb, preposition, conjunction, interjection.",
+      "examples": ["Noun: John is a doctor.", "Adjective: The tall man.", "Adverb: She sings beautifully."]
+    },
+    "2": {
+      "title": "Tenses",
+      "content": "Tenses express the time of action. There are three main tenses: past, present, future. Each has four forms.",
+      "examples": ["Present: I eat.", "Past: I ate.", "Future: I will eat."]
+    },
+    "3": {
+      "title": "Articles",
+      "content": "Articles define a noun as specific or unspecific. 'A' and 'an' are indefinite; 'the' is definite.",
+      "examples": ["A dog barked.", "The dog barked."]
+    }
+  }
+}
