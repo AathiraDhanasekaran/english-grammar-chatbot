@@ -10,13 +10,13 @@ def load_lessons():
 
 lessons = load_lessons()
 
-# Memory state
+# Initialize session state
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 if "last_lesson" not in st.session_state:
     st.session_state.last_lesson = None
 
-# Bot response logic
+# Response logic
 def get_response(user_input):
     user_input = user_input.lower().strip()
 
@@ -42,31 +42,21 @@ def get_response(user_input):
     else:
         return "🤖 I didn't understand that. Type 'menu' to see available lessons."
 
-# Streamlit UI
+# Page title
 st.title("📚 English Grammar Chatbot")
 
-# Display chat messages in order, with latest at the bottom
-chat_container = st.container()
-
-with chat_container:
+# Display chat history (top area)
+chat_placeholder = st.container()
+with chat_placeholder:
     for speaker, message in st.session_state.chat_history:
         st.markdown(f"**{speaker}:** {message}")
 
-# A small spacer to create distance before the input field
-st.markdown("---")
+# User input (bottom area)
+user_input = st.text_input("💬 Type your message and press Enter", key="input")
 
-# Keep input at the bottom
-input_container = st.container()
-
-with input_container:
-    with st.form(key="chat_form", clear_on_submit=True):
-        user_input = st.text_input("💬 Type your message and press Enter:")
-        submitted = st.form_submit_button("Send")
-
-        if submitted and user_input:
-            response = get_response(user_input)
-            st.session_state.chat_history.append(("You", user_input))
-            st.session_state.chat_history.append(("Bot", response))
-            st.experimental_rerun()  # Auto-scrolls to bottom by re-running the app
-
-
+if user_input:
+    response = get_response(user_input)
+    st.session_state.chat_history.append(("You", user_input))
+    st.session_state.chat_history.append(("Bot", response))
+    st.session_state.input = ""  # clear input manually
+    # Instead of rerun, simulate clear input by resetting session_state key
