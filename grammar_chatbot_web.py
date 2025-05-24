@@ -13,10 +13,14 @@ lessons = load_lessons()
 # Initialize session state
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
+
 if "last_lesson" not in st.session_state:
     st.session_state.last_lesson = None
 
-# Response logic
+if "user_input_text" not in st.session_state:
+    st.session_state.user_input_text = ""
+
+# Bot response logic
 def get_response(user_input):
     user_input = user_input.lower().strip()
 
@@ -42,21 +46,23 @@ def get_response(user_input):
     else:
         return "🤖 I didn't understand that. Type 'menu' to see available lessons."
 
-# Page title
+# App title
 st.title("📚 English Grammar Chatbot")
 
-# Display chat history (top area)
-chat_placeholder = st.container()
-with chat_placeholder:
+# Display chat history (top)
+with st.container():
     for speaker, message in st.session_state.chat_history:
         st.markdown(f"**{speaker}:** {message}")
 
-# User input (bottom area)
-user_input = st.text_input("💬 Type your message and press Enter", key="input")
+# Input field (fixed at bottom)
+user_input = st.text_input(
+    "💬 Type your message and press Enter:",
+    key="user_input_text"
+)
 
 if user_input:
     response = get_response(user_input)
     st.session_state.chat_history.append(("You", user_input))
     st.session_state.chat_history.append(("Bot", response))
-    st.session_state.input = ""  # clear input manually
-    # Instead of rerun, simulate clear input by resetting session_state key
+    st.session_state.user_input_text = ""  # Clear input safely
+    st.experimental_rerun()  # Rerun app to simulate auto-scroll
